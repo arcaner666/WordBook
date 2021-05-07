@@ -135,6 +135,10 @@ namespace WordBook.Controllers
             {
                 return new ErrorResult(Messages.CategoryNotFound);
             }
+            if (db.Words.Any(w => w.CategoryId == categoryDto.CategoryId))
+            {
+                return new ErrorResult(Messages.CategoryCanNotBeDeleted);
+            }
             db.Categories.Remove(deletedCategory);
             db.SaveChanges();
             return new SuccessResult(Messages.CategoryDeleted);
@@ -202,6 +206,10 @@ namespace WordBook.Controllers
             {
                 return new ErrorResult(Messages.TypeNotFound);
             }
+            if (db.Words.Any(w => w.TypeId == typeDto.TypeId))
+            {
+                return new ErrorResult(Messages.TypeCanNotBeDeleted);
+            }
             db.Types.Remove(deletedType);
             db.SaveChanges();
             return new SuccessResult(Messages.TypeDeleted);
@@ -267,6 +275,10 @@ namespace WordBook.Controllers
             {
                 return new ErrorResult(Messages.BoxNotFound);
             }
+            if (db.Words.Any(w => w.BoxId == boxDto.BoxId))
+            {
+                return new ErrorResult(Messages.BoxCanNotBeDeleted);
+            }
             db.Boxes.Remove(deletedBox);
             db.SaveChanges();
             return new SuccessResult(Messages.BoxDeleted);
@@ -313,6 +325,10 @@ namespace WordBook.Controllers
             if (!db.Types.Any(w => w.TypeId == wordDto.TypeId))
             {
                 return new ErrorResult(Messages.TypeNotFound);
+            }
+            if (!db.Boxes.Any(w => w.BoxId == wordDto.BoxId))
+            {
+                return new ErrorResult(Messages.BoxNotFound);
             }
             Word addedWord = new()
             {
@@ -363,6 +379,148 @@ namespace WordBook.Controllers
             db.Words.Remove(deletedWord);
             db.SaveChanges();
             return new SuccessResult(Messages.WordDeleted);
+        }
+        #endregion
+
+        #region AchievementTypes
+        [HttpGet("getallachievementtypes")]
+        public IResult GetAllAchievementTypes()
+        {
+            using WordBookContext db = new();
+            List<AchievementTypeDto> achievementTypes = db.AchievementTypes.Select(achievementType =>
+            new AchievementTypeDto
+            {
+                AchievementTypeId = achievementType.AchievementTypeId,
+                Name = achievementType.Name
+            }).ToList();
+            if (!achievementTypes.Any())
+            {
+                return new ErrorResult(Messages.AchievementTypeNotFound);
+            }
+            return new SuccessDataResult<List<AchievementTypeDto>>(achievementTypes, Messages.AchievementTypesListed);
+        }
+
+        [HttpPost("addachievementtype")]
+        public IResult AddAchievementType(AchievementTypeDto achievementTypeDto)
+        {
+            using WordBookContext db = new();
+            if (db.AchievementTypes.Any(a => a.Name == achievementTypeDto.Name))
+            {
+                return new ErrorResult(Messages.AchievementTypeAlreadyExists);
+            }
+            AchievementType addedAchievementType = new()
+            {
+                AchievementTypeId = 0,
+                Name = achievementTypeDto.Name
+            };
+            db.AchievementTypes.Add(addedAchievementType);
+            db.SaveChanges();
+            return new SuccessResult(Messages.AchievementTypeAdded);
+        }
+
+        [HttpPost("updateachievementtype")]
+        public IResult UpdateAchievementType(AchievementTypeDto achievementTypeDto)
+        {
+            using WordBookContext db = new();
+            AchievementType updatedAchievementType = db.AchievementTypes.Where(a => a.AchievementTypeId == achievementTypeDto.AchievementTypeId).SingleOrDefault();
+            if (updatedAchievementType == null)
+            {
+                return new ErrorResult(Messages.AchievementTypeNotFound);
+            }
+            updatedAchievementType.Name = achievementTypeDto.Name;
+            db.SaveChanges();
+            return new SuccessResult(Messages.AchievementTypeUpdated);
+        }
+
+        [HttpPost("deleteachievementtype")]
+        public IResult DeleteAchievementType(AchievementTypeDto achievementTypeDto)
+        {
+            using WordBookContext db = new();
+            AchievementType deletedAchievementType = db.AchievementTypes.Where(a => a.AchievementTypeId == achievementTypeDto.AchievementTypeId).SingleOrDefault();
+            if (deletedAchievementType == null)
+            {
+                return new ErrorResult(Messages.AchievementTypeNotFound);
+            }
+            if (db.Achievements.Any(a => a.AchievementTypeId == achievementTypeDto.AchievementTypeId))
+            {
+                return new ErrorResult(Messages.AchievementTypeCanNotBeDeleted);
+            }
+            db.AchievementTypes.Remove(deletedAchievementType);
+            db.SaveChanges();
+            return new SuccessResult(Messages.AchievementTypeDeleted);
+        }
+        #endregion
+
+        #region Achievements
+        [HttpGet("getallachievementsbyuserid/{userId}")]
+        public IResult GetAllAchievementsByUserId(int userId)
+        {
+            using WordBookContext db = new();
+            List<AchievementDto> achievements = db.Achievements.Where(a => a.UserId == userId).Select(achievement =>
+            new AchievementDto
+            {
+                AchievementId = achievement.AchievementId,
+                UserId = achievement.UserId,
+                AchievementTypeId = achievement.AchievementTypeId,
+                Score = achievement.Score,
+                UpdatedAt = achievement.UpdatedAt
+            }).ToList();
+            if (!achievements.Any())
+            {
+                return new ErrorResult(Messages.AchievementNotFound);
+            }
+            return new SuccessDataResult<List<AchievementDto>>(achievements, Messages.AchievementsListed);
+        }
+
+        [HttpPost("addachievement")]
+        public IResult AddAchievement(AchievementDto achievementDto)
+        {
+            using WordBookContext db = new();
+            if (db.Achievements.Any(a => a.AchievementTypeId == achievementDto.AchievementTypeId))
+            {
+                return new ErrorResult(Messages.AchievementAlreadyExists);
+            }
+            Achievement addedAchievement = new()
+            {
+                AchievementId = 0,
+                UserId = achievementDto.UserId,
+                AchievementTypeId = achievementDto.AchievementTypeId,
+                Score = achievementDto.Score,
+                UpdatedAt = System.DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString()
+            };
+            db.Achievements.Add(addedAchievement);
+            db.SaveChanges();
+            return new SuccessResult(Messages.AchievementAdded);
+        }
+
+        [HttpPost("updateachievement")]
+        public IResult UpdateAchievement(AchievementDto achievementDto)
+        {
+            using WordBookContext db = new();
+            Achievement updatedAchievement = db.Achievements.Where(a => a.AchievementId == achievementDto.AchievementId).SingleOrDefault();
+            if (updatedAchievement == null)
+            {
+                return new ErrorResult(Messages.AchievementNotFound);
+            }
+            updatedAchievement.AchievementTypeId = achievementDto.AchievementTypeId;
+            updatedAchievement.Score = achievementDto.Score;
+            updatedAchievement.UpdatedAt = System.DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString();
+            db.SaveChanges();
+            return new SuccessResult(Messages.AchievementUpdated);
+        }
+
+        [HttpPost("deleteachievement")]
+        public IResult DeleteAchievement(AchievementDto achievementDto)
+        {
+            using WordBookContext db = new();
+            Achievement deletedAchievement = db.Achievements.Where(a => a.AchievementId == achievementDto.AchievementId).SingleOrDefault();
+            if (deletedAchievement == null)
+            {
+                return new ErrorResult(Messages.AchievementNotFound);
+            }
+            db.Achievements.Remove(deletedAchievement);
+            db.SaveChanges();
+            return new SuccessResult(Messages.AchievementDeleted);
         }
         #endregion
     }
