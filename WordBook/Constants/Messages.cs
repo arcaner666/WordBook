@@ -74,5 +74,33 @@ namespace WordBook.Constants
         public const string AchievementDeleted = "The achievement has been deleted.";
         public const string AchievementAlreadyExists = "This achievement already exists!";
         #endregion
+
+        #region RankTypes
+        public const string RankTypesListed = "All rank types has been listed.";
+        public const string RankTypeNotFound = "No rank types found.";
+        public const string RankTypeAdded = "The rank type has been added.";
+        public const string RankTypeUpdated = "The rank type has been updated.";
+        public const string RankTypeDeleted = "The rank type has been deleted.";
+        public const string RankTypeCanNotBeDeleted = "This rank type cannot be deleted because there are rankings in this rank type!";
+        public const string RankTypeAlreadyExists = "This rank type already exists!";
+        #endregion
+
+        #region Rankings
+        public const string RankingsListed = "All rankings has been listed.";
+        public const string RankingsNotFound = "No rankings found.";
+        public const string RankingAdded = "The ranking has been added.";
+        public const string RankingUpdated = "The ranking has been updated.";
+        public const string RankingDeleted = "The ranking has been deleted.";
+        public const string RankingAlreadyExists = "This ranking already exists!";
+        #endregion
+
+        #region Contacts
+        public const string ContactsListed = "All contacts has been listed.";
+        public const string ContactsNotFound = "No contacts found.";
+        public const string ContactAdded = "The contact has been added.";
+        public const string ContactUpdated = "The contact has been updated.";
+        public const string ContactDeleted = "The contact has been deleted.";
+        public const string ContactAlreadyExists = "This contact already exists!";
+        #endregion
     }
 }

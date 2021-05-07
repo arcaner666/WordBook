@@ -18,7 +18,7 @@ namespace WordBook.Controllers
         public IResult Register(UserDto userDto)
         {
             using WordBookContext db = new();
-            if (db.Users.Any(a => a.UserName == userDto.UserName))
+            if (db.Users.Any(u => u.UserName == userDto.UserName))
             {
                 return new ErrorResult(Messages.UserNameAlreadyInUse);
             }
@@ -97,7 +97,7 @@ namespace WordBook.Controllers
         public IResult AddCategory(CategoryDto categoryDto)
         {
             using WordBookContext db = new();
-            if (db.Categories.Any(a => a.Name == categoryDto.Name))
+            if (db.Categories.Any(c => c.Name == categoryDto.Name))
             {
                 return new ErrorResult(Messages.CategoryAlreadyExists);
             }
@@ -116,7 +116,7 @@ namespace WordBook.Controllers
         public IResult UpdateCategory(CategoryDto categoryDto)
         {
             using WordBookContext db = new();
-            Category updatedCategory = db.Categories.Where(a => a.CategoryId == categoryDto.CategoryId).SingleOrDefault();
+            Category updatedCategory = db.Categories.Where(c => c.CategoryId == categoryDto.CategoryId).SingleOrDefault();
             if (updatedCategory == null)
             {
                 return new ErrorResult(Messages.CategoryNotFound);
@@ -130,7 +130,7 @@ namespace WordBook.Controllers
         public IResult DeleteCategory(CategoryDto categoryDto)
         {
             using WordBookContext db = new();
-            Category deletedCategory = db.Categories.Where(a => a.CategoryId == categoryDto.CategoryId).SingleOrDefault();
+            Category deletedCategory = db.Categories.Where(c => c.CategoryId == categoryDto.CategoryId).SingleOrDefault();
             if (deletedCategory == null)
             {
                 return new ErrorResult(Messages.CategoryNotFound);
@@ -150,7 +150,7 @@ namespace WordBook.Controllers
         public IResult GetAllTypesByUserId(int userId)
         {
             using WordBookContext db = new();
-            List<TypeDto> types = db.Types.Where(c => c.UserId == userId).Select(type =>
+            List<TypeDto> types = db.Types.Where(t => t.UserId == userId).Select(type =>
             new TypeDto
             {
                 TypeId = type.TypeId,
@@ -168,7 +168,7 @@ namespace WordBook.Controllers
         public IResult AddType(TypeDto typeDto)
         {
             using WordBookContext db = new();
-            if (db.Types.Any(a => a.Name == typeDto.Name))
+            if (db.Types.Any(t => t.Name == typeDto.Name))
             {
                 return new ErrorResult(Messages.TypeAlreadyExists);
             }
@@ -187,7 +187,7 @@ namespace WordBook.Controllers
         public IResult UpdateType(TypeDto typeDto)
         {
             using WordBookContext db = new();
-            Type updatedType = db.Types.Where(a => a.TypeId == typeDto.TypeId).SingleOrDefault();
+            Type updatedType = db.Types.Where(t => t.TypeId == typeDto.TypeId).SingleOrDefault();
             if (updatedType == null)
             {
                 return new ErrorResult(Messages.TypeNotFound);
@@ -201,7 +201,7 @@ namespace WordBook.Controllers
         public IResult DeleteType(TypeDto typeDto)
         {
             using WordBookContext db = new();
-            Type deletedType = db.Types.Where(a => a.TypeId == typeDto.TypeId).SingleOrDefault();
+            Type deletedType = db.Types.Where(t => t.TypeId == typeDto.TypeId).SingleOrDefault();
             if (deletedType == null)
             {
                 return new ErrorResult(Messages.TypeNotFound);
@@ -238,7 +238,7 @@ namespace WordBook.Controllers
         public IResult AddBox(BoxDto boxDto)
         {
             using WordBookContext db = new();
-            if (db.Boxes.Any(a => a.Name == boxDto.Name))
+            if (db.Boxes.Any(b => b.Name == boxDto.Name))
             {
                 return new ErrorResult(Messages.BoxAlreadyExists);
             }
@@ -318,15 +318,15 @@ namespace WordBook.Controllers
             {
                 return new ErrorResult(Messages.WordAlreadyExists);
             }
-            if (!db.Categories.Any(w => w.CategoryId == wordDto.CategoryId))
+            if (!db.Categories.Any(c => c.CategoryId == wordDto.CategoryId))
             {
                 return new ErrorResult(Messages.CategoryNotFound);
             }
-            if (!db.Types.Any(w => w.TypeId == wordDto.TypeId))
+            if (!db.Types.Any(t => t.TypeId == wordDto.TypeId))
             {
                 return new ErrorResult(Messages.TypeNotFound);
             }
-            if (!db.Boxes.Any(w => w.BoxId == wordDto.BoxId))
+            if (!db.Boxes.Any(b => b.BoxId == wordDto.BoxId))
             {
                 return new ErrorResult(Messages.BoxNotFound);
             }
@@ -521,6 +521,219 @@ namespace WordBook.Controllers
             db.Achievements.Remove(deletedAchievement);
             db.SaveChanges();
             return new SuccessResult(Messages.AchievementDeleted);
+        }
+        #endregion
+
+        #region RankTypes
+        [HttpGet("getallranktypes")]
+        public IResult GetAllRankTypes()
+        {
+            using WordBookContext db = new();
+            List<RankTypeDto> rankTypes = db.RankTypes.Select(rankType =>
+            new RankTypeDto
+            {
+                RankTypeId = rankType.RankTypeId,
+                Name = rankType.Name
+            }).ToList();
+            if (!rankTypes.Any())
+            {
+                return new ErrorResult(Messages.RankTypeNotFound);
+            }
+            return new SuccessDataResult<List<RankTypeDto>>(rankTypes, Messages.RankTypesListed);
+        }
+
+        [HttpPost("addranktype")]
+        public IResult AddRankType(RankTypeDto rankTypeDto)
+        {
+            using WordBookContext db = new();
+            if (db.RankTypes.Any(r => r.Name == rankTypeDto.Name))
+            {
+                return new ErrorResult(Messages.RankTypeAlreadyExists);
+            }
+            RankType addedRankType = new()
+            {
+                RankTypeId = 0,
+                Name = rankTypeDto.Name
+            };
+            db.RankTypes.Add(addedRankType);
+            db.SaveChanges();
+            return new SuccessResult(Messages.RankTypeAdded);
+        }
+
+        [HttpPost("updateranktype")]
+        public IResult UpdateRankType(RankTypeDto rankTypeDto)
+        {
+            using WordBookContext db = new();
+            RankType updatedRankType = db.RankTypes.Where(r => r.RankTypeId == rankTypeDto.RankTypeId).SingleOrDefault();
+            if (updatedRankType == null)
+            {
+                return new ErrorResult(Messages.RankTypeNotFound);
+            }
+            updatedRankType.Name = rankTypeDto.Name;
+            db.SaveChanges();
+            return new SuccessResult(Messages.RankTypeUpdated);
+        }
+
+        [HttpPost("deleteranktype")]
+        public IResult DeleteRankType(RankTypeDto rankTypeDto)
+        {
+            using WordBookContext db = new();
+            RankType deletedRankType = db.RankTypes.Where(r => r.RankTypeId == rankTypeDto.RankTypeId).SingleOrDefault();
+            if (deletedRankType == null)
+            {
+                return new ErrorResult(Messages.RankTypeNotFound);
+            }
+            if (db.Rankings.Any(r => r.RankTypeId == rankTypeDto.RankTypeId))
+            {
+                return new ErrorResult(Messages.RankTypeCanNotBeDeleted);
+            }
+            db.RankTypes.Remove(deletedRankType);
+            db.SaveChanges();
+            return new SuccessResult(Messages.RankTypeDeleted);
+        }
+        #endregion
+
+        #region Rankings
+        [HttpGet("getallrankings")]
+        public IResult GetAllRankings()
+        {
+            using WordBookContext db = new();
+            List<RankingDto> rankings = db.Rankings.Select(ranking =>
+            new RankingDto
+            {
+                RankId = ranking.RankTypeId,
+                UserId = ranking.UserId,
+                RankTypeId = ranking.RankTypeId,
+                Score = ranking.Score,
+                UpdatedAt = ranking.UpdatedAt
+            }).ToList();
+            if (!rankings.Any())
+            {
+                return new ErrorResult(Messages.RankingsNotFound);
+            }
+            return new SuccessDataResult<List<RankingDto>>(rankings, Messages.RankingsListed);
+        }
+
+        [HttpPost("addranking")]
+        public IResult AddRanking(RankingDto rankingDto)
+        {
+            using WordBookContext db = new();
+            if (db.Rankings.Any(r => r.RankTypeId == rankingDto.RankTypeId))
+            {
+                return new ErrorResult(Messages.RankingAlreadyExists);
+            }
+            Ranking addedRanking = new()
+            {
+                RankId = 0,
+                UserId = rankingDto.UserId,
+                RankTypeId = rankingDto.RankTypeId,
+                Score = rankingDto.Score,
+                UpdatedAt = System.DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString()
+            };
+            db.Rankings.Add(addedRanking);
+            db.SaveChanges();
+            return new SuccessResult(Messages.RankingAdded);
+        }
+
+        [HttpPost("updateranking")]
+        public IResult UpdateRanking(RankingDto rankingDto)
+        {
+            using WordBookContext db = new();
+            Ranking updatedRanking = db.Rankings.Where(r => r.RankId == rankingDto.RankId).SingleOrDefault();
+            if (updatedRanking == null)
+            {
+                return new ErrorResult(Messages.RankingsNotFound);
+            }
+            updatedRanking.UserId = rankingDto.UserId;
+            updatedRanking.RankTypeId = rankingDto.RankTypeId;
+            updatedRanking.Score = rankingDto.Score;
+            updatedRanking.UpdatedAt = System.DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString();
+            db.SaveChanges();
+            return new SuccessResult(Messages.RankingUpdated);
+        }
+
+        [HttpPost("deleteranking")]
+        public IResult DeleteRanking(RankingDto rankingDto)
+        {
+            using WordBookContext db = new();
+            Ranking deletedRanking = db.Rankings.Where(r => r.RankId == rankingDto.RankId).SingleOrDefault();
+            if (deletedRanking == null)
+            {
+                return new ErrorResult(Messages.RankingsNotFound);
+            }
+            db.Rankings.Remove(deletedRanking);
+            db.SaveChanges();
+            return new SuccessResult(Messages.RankingDeleted);
+        }
+        #endregion
+
+        #region Contacts
+        [HttpGet("getallcontactsbyuserid/{userId}")]
+        public IResult GetAllContactsByUserId(int userId)
+        {
+            using WordBookContext db = new();
+            List<ContactDto> contacts = db.Contacts.Where(c => c.UserId == userId).Select(contact =>
+            new ContactDto
+            {
+                ContactId = contact.ContactId,
+                UserId = contact.UserId,
+                FriendId = contact.FriendId,
+                CreatedAt = contact.CreatedAt
+            }).ToList();
+            if (!contacts.Any())
+            {
+                return new ErrorResult(Messages.ContactsNotFound);
+            }
+            return new SuccessDataResult<List<ContactDto>>(contacts, Messages.ContactsListed);
+        }
+
+        [HttpPost("addcontact")]
+        public IResult AddContact(ContactDto contactDto)
+        {
+            using WordBookContext db = new();
+            if (db.Contacts.Any(c => c.FriendId == contactDto.FriendId))
+            {
+                return new ErrorResult(Messages.ContactAlreadyExists);
+            }
+            Contact addedContact = new()
+            {
+                ContactId = 0,
+                UserId = contactDto.UserId,
+                FriendId = contactDto.FriendId,
+                CreatedAt = System.DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString()
+            };
+            db.Contacts.Add(addedContact);
+            db.SaveChanges();
+            return new SuccessResult(Messages.ContactAdded);
+        }
+
+        [HttpPost("updatecontact")]
+        public IResult UpdateContact(ContactDto contactDto)
+        {
+            using WordBookContext db = new();
+            Contact updatedContact = db.Contacts.Where(c => c.ContactId == contactDto.ContactId).SingleOrDefault();
+            if (updatedContact == null)
+            {
+                return new ErrorResult(Messages.ContactsNotFound);
+            }
+            updatedContact.FriendId = contactDto.FriendId;
+            updatedContact.CreatedAt = System.DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString();
+            db.SaveChanges();
+            return new SuccessResult(Messages.ContactUpdated);
+        }
+
+        [HttpPost("deletecontact")]
+        public IResult DeleteContact(ContactDto contactDto)
+        {
+            using WordBookContext db = new();
+            Contact deletedContact = db.Contacts.Where(c => c.ContactId == contactDto.ContactId).SingleOrDefault();
+            if (deletedContact == null)
+            {
+                return new ErrorResult(Messages.ContactsNotFound);
+            }
+            db.Contacts.Remove(deletedContact);
+            db.SaveChanges();
+            return new SuccessResult(Messages.ContactDeleted);
         }
         #endregion
     }
