@@ -12,6 +12,8 @@ namespace WordBook.DatabaseModels
             Achievements = new HashSet<Achievement>();
             Categories = new HashSet<Category>();
             ContactFriends = new HashSet<Contact>();
+            ContactRequestReceivers = new HashSet<ContactRequest>();
+            ContactRequestSenders = new HashSet<ContactRequest>();
             ContactUsers = new HashSet<Contact>();
             MessageReceivers = new HashSet<Message>();
             MessageSenders = new HashSet<Message>();
@@ -39,6 +41,8 @@ namespace WordBook.DatabaseModels
         public virtual ICollection<Achievement> Achievements { get; set; }
         public virtual ICollection<Category> Categories { get; set; }
         public virtual ICollection<Contact> ContactFriends { get; set; }
+        public virtual ICollection<ContactRequest> ContactRequestReceivers { get; set; }
+        public virtual ICollection<ContactRequest> ContactRequestSenders { get; set; }
         public virtual ICollection<Contact> ContactUsers { get; set; }
         public virtual ICollection<Message> MessageReceivers { get; set; }
         public virtual ICollection<Message> MessageSenders { get; set; }

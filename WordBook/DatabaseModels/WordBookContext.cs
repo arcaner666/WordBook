@@ -22,6 +22,7 @@ namespace WordBook.DatabaseModels
         public virtual DbSet<Box> Boxes { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Contact> Contacts { get; set; }
+        public virtual DbSet<ContactRequest> ContactRequests { get; set; }
         public virtual DbSet<Message> Messages { get; set; }
         public virtual DbSet<RankType> RankTypes { get; set; }
         public virtual DbSet<Ranking> Rankings { get; set; }
@@ -99,13 +100,32 @@ namespace WordBook.DatabaseModels
                     .WithMany(p => p.ContactFriends)
                     .HasForeignKey(d => d.FriendId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Contacts__Friend__656C112C");
+                    .HasConstraintName("FK__Contacts__Friend__693CA210");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.ContactUsers)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Contacts__UserId__6477ECF3");
+                    .HasConstraintName("FK__Contacts__UserId__68487DD7");
+            });
+
+            modelBuilder.Entity<ContactRequest>(entity =>
+            {
+                entity.Property(e => e.CreatedAt)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.HasOne(d => d.Receiver)
+                    .WithMany(p => p.ContactRequestReceivers)
+                    .HasForeignKey(d => d.ReceiverId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__ContactRe__Recei__656C112C");
+
+                entity.HasOne(d => d.Sender)
+                    .WithMany(p => p.ContactRequestSenders)
+                    .HasForeignKey(d => d.SenderId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__ContactRe__Sende__6477ECF3");
             });
 
             modelBuilder.Entity<Message>(entity =>
@@ -122,13 +142,13 @@ namespace WordBook.DatabaseModels
                     .WithMany(p => p.MessageReceivers)
                     .HasForeignKey(d => d.ReceiverId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Messages__Receiv__693CA210");
+                    .HasConstraintName("FK__Messages__Receiv__6D0D32F4");
 
                 entity.HasOne(d => d.Sender)
                     .WithMany(p => p.MessageSenders)
                     .HasForeignKey(d => d.SenderId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Messages__Sender__68487DD7");
+                    .HasConstraintName("FK__Messages__Sender__6C190EBB");
             });
 
             modelBuilder.Entity<RankType>(entity =>
@@ -141,7 +161,7 @@ namespace WordBook.DatabaseModels
             modelBuilder.Entity<Ranking>(entity =>
             {
                 entity.HasKey(e => e.RankId)
-                    .HasName("PK__Rankings__B37AF8765B709348");
+                    .HasName("PK__Rankings__B37AF876C38D52A2");
 
                 entity.Property(e => e.UpdatedAt)
                     .IsRequired()
@@ -170,19 +190,19 @@ namespace WordBook.DatabaseModels
                     .WithMany(p => p.SharedWordReceivers)
                     .HasForeignKey(d => d.ReceiverId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__SharedWor__Recei__6D0D32F4");
+                    .HasConstraintName("FK__SharedWor__Recei__70DDC3D8");
 
                 entity.HasOne(d => d.Sender)
                     .WithMany(p => p.SharedWordSenders)
                     .HasForeignKey(d => d.SenderId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__SharedWor__Sende__6C190EBB");
+                    .HasConstraintName("FK__SharedWor__Sende__6FE99F9F");
 
                 entity.HasOne(d => d.Word)
                     .WithMany(p => p.SharedWords)
                     .HasForeignKey(d => d.WordId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__SharedWor__WordI__6E01572D");
+                    .HasConstraintName("FK__SharedWor__WordI__71D1E811");
             });
 
             modelBuilder.Entity<Type>(entity =>

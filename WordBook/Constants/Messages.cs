@@ -8,6 +8,10 @@ namespace WordBook.Constants
     public static class Messages
     {
         #region Registration
+        public const string StartupComplete = "The startup process have been completed.";
+        #endregion
+
+        #region Registration
         public const string RegistrationSuccessful = "Registration is successful.";
         public const string UserNameAlreadyInUse = "This user name is already in use!";
         #endregion
@@ -23,8 +27,10 @@ namespace WordBook.Constants
         public const string CategoryAdded = "The category has been added.";
         public const string CategoryUpdated = "The category has been updated.";
         public const string CategoryDeleted = "The category has been deleted.";
-        public const string CategoryCanNotBeDeleted = "This category cannot be deleted because there are words in this category!";
         public const string CategoryAlreadyExists = "This category already exists!";
+        public const string CanNotDeleteCategoryDueToWords = "This category cannot be deleted because there are words in this category!";
+        public const string CanNotUpdateSystemCategories = "System categories cannot be updated!";
+        public const string CanNotDeleteSystemCategories = "System categories cannot be deleted!";
         #endregion
 
         #region Types
@@ -33,8 +39,10 @@ namespace WordBook.Constants
         public const string TypeAdded = "The type has been added.";
         public const string TypeUpdated = "The type has been updated.";
         public const string TypeDeleted = "The type has been deleted.";
-        public const string TypeCanNotBeDeleted = "This type cannot be deleted because there are words in this type!";
         public const string TypeAlreadyExists = "This type already exists!";
+        public const string CanNotDeleteTypeDueToWords = "This type cannot be deleted because there are words in this type!";
+        public const string CanNotUpdateSystemTypes = "System types cannot be updated!";
+        public const string CanNotDeleteSystemTypes = "System types cannot be deleted!";
         #endregion
 
         #region Boxes
@@ -94,6 +102,15 @@ namespace WordBook.Constants
         public const string RankingAlreadyExists = "This ranking already exists!";
         #endregion
 
+        #region ContactRequests
+        public const string ContactRequestsListed = "Contact requests have been listed.";
+        public const string ContactRequestNotFound = "The contact request is not found.";
+        public const string ContactRequestSent = "The contact request has been sent.";
+        public const string ContactRequestConfirmed = "The contact request has been confirmed.";
+        public const string ContactRequestDeleted = "The contact request has been deleted.";
+        public const string ContactRequestAlreadySent = "This contact request is already sent!";
+        #endregion
+
         #region Contacts
         public const string ContactsListed = "Contacts have been listed.";
         public const string ContactNotFound = "The contact is not found.";
@@ -114,7 +131,7 @@ namespace WordBook.Constants
         public const string SharedWordsListed = "Shared words have been listed.";
         public const string SharedWordNotFound = "The shared word is not found.";
         public const string WordShared = "The word has been shared.";
-        public const string SharedWordAdded = "The shared word has been added to words.";
+        public const string SharedWordConfirmed = "The shared word has been confirmed and added to words.";
         public const string SharedWordDeleted = "The shared word has been deleted.";
         #endregion
     }

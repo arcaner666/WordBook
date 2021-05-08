@@ -13,6 +13,34 @@ namespace WordBook.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
+        #region Startup
+        [HttpGet("startup")]
+        public IResult Startup()
+        {
+            using WordBookContext db = new();
+            Box unknownBox = new()
+            {
+                BoxId = 0,
+                Name = "unknown",
+            };
+            db.Boxes.Add(unknownBox);
+            Box barelyKnownBox = new()
+            {
+                BoxId = 0,
+                Name = "barely known",
+            };
+            db.Boxes.Add(barelyKnownBox);
+            Box knownBox = new()
+            {
+                BoxId = 0,
+                Name = "known",
+            };
+            db.Boxes.Add(knownBox);
+            db.SaveChanges();
+            return new SuccessResult(Messages.StartupComplete);
+        }
+        #endregion
+
         #region Registration
         [HttpPost("register")]
         public IResult Register(UserDto userDto)
@@ -150,6 +178,10 @@ namespace WordBook.Controllers
             {
                 return new ErrorResult(Messages.CategoryNotFound);
             }
+            if (updatedCategory.Name == "General" || updatedCategory.Name == "Shared")
+            {
+                return new ErrorResult(Messages.CanNotUpdateSystemCategories);
+            }
             updatedCategory.Name = categoryDto.Name;
             db.SaveChanges();
             return new SuccessResult(Messages.CategoryUpdated);
@@ -164,9 +196,13 @@ namespace WordBook.Controllers
             {
                 return new ErrorResult(Messages.CategoryNotFound);
             }
+            if (deletedCategory.Name == "General" || deletedCategory.Name == "Shared")
+            {
+                return new ErrorResult(Messages.CanNotDeleteSystemCategories);
+            }
             if (db.Words.Any(w => w.CategoryId == categoryDto.CategoryId))
             {
-                return new ErrorResult(Messages.CategoryCanNotBeDeleted);
+                return new ErrorResult(Messages.CanNotDeleteCategoryDueToWords);
             }
             db.Categories.Remove(deletedCategory);
             db.SaveChanges();
@@ -221,6 +257,10 @@ namespace WordBook.Controllers
             {
                 return new ErrorResult(Messages.TypeNotFound);
             }
+            if (updatedType.Name == "General" || updatedType.Name == "Shared")
+            {
+                return new ErrorResult(Messages.CanNotUpdateSystemTypes);
+            }
             updatedType.Name = typeDto.Name;
             db.SaveChanges();
             return new SuccessResult(Messages.TypeUpdated);
@@ -235,9 +275,13 @@ namespace WordBook.Controllers
             {
                 return new ErrorResult(Messages.TypeNotFound);
             }
+            if (deletedType.Name == "General" || deletedType.Name == "Shared")
+            {
+                return new ErrorResult(Messages.CanNotDeleteSystemTypes);
+            }
             if (db.Words.Any(w => w.TypeId == typeDto.TypeId))
             {
-                return new ErrorResult(Messages.TypeCanNotBeDeleted);
+                return new ErrorResult(Messages.CanNotDeleteTypeDueToWords);
             }
             db.Types.Remove(deletedType);
             db.SaveChanges();
@@ -696,6 +740,87 @@ namespace WordBook.Controllers
         }
         #endregion
 
+        #region ContactRequests
+        [HttpGet("getallcontactrequestsbyreceiverid/{receiverId}")]
+        public IResult GetAllContactRequestsByReceiverId(int receiverId)
+        {
+            using WordBookContext db = new();
+            List<ContactRequestDto> contactRequests = db.ContactRequests.Where(c => c.ReceiverId == receiverId).Select(contactRequest =>
+            new ContactRequestDto
+            {
+                ContactRequestId = contactRequest.ContactRequestId,
+                SenderId = contactRequest.SenderId,
+                ReceiverId = contactRequest.ReceiverId,
+                CreatedAt = contactRequest.CreatedAt
+            }).ToList();
+            if (!contactRequests.Any())
+            {
+                return new ErrorResult(Messages.ContactRequestNotFound);
+            }
+            return new SuccessDataResult<List<ContactRequestDto>>(contactRequests, Messages.ContactRequestsListed);
+        }
+
+        [HttpPost("sendcontactrequest")]
+        public IResult SendContactRequest(ContactRequestDto contactRequestDto)
+        {
+            using WordBookContext db = new();
+            if (db.ContactRequests.Any(c => c.SenderId == contactRequestDto.SenderId && c.ReceiverId == contactRequestDto.ReceiverId))
+            {
+                return new ErrorResult(Messages.ContactRequestAlreadySent);
+            }
+            ContactRequest sentContactRequest = new()
+            {
+                ContactRequestId = 0,
+                SenderId = contactRequestDto.SenderId,
+                ReceiverId = contactRequestDto.ReceiverId,
+                CreatedAt = System.DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString()
+            };
+            db.ContactRequests.Add(sentContactRequest);
+            db.SaveChanges();
+            return new SuccessResult(Messages.ContactRequestSent);
+        }
+
+        [HttpPost("confirmcontactrequest")]
+        public IResult ConfirmContactRequest(ContactRequestDto contactRequestDto)
+        {
+            using WordBookContext db = new();
+            ContactRequest confirmedContactRequest = db.ContactRequests.Where(c => c.ContactRequestId == contactRequestDto.ContactRequestId).SingleOrDefault();
+            if (confirmedContactRequest == null)
+            {
+                return new ErrorResult(Messages.ContactRequestNotFound);
+            }
+            Contact addedContactToSender = new();
+            addedContactToSender.ContactId = 0;
+            addedContactToSender.UserId = confirmedContactRequest.SenderId;
+            addedContactToSender.FriendId = confirmedContactRequest.ReceiverId;
+            addedContactToSender.CreatedAt = System.DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString();
+            db.Contacts.Add(addedContactToSender);
+            Contact addedContactToReceiver = new();
+            addedContactToReceiver.ContactId = 0;
+            addedContactToReceiver.UserId = confirmedContactRequest.ReceiverId;
+            addedContactToReceiver.FriendId = confirmedContactRequest.SenderId;
+            addedContactToReceiver.CreatedAt = System.DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString();
+            db.Contacts.Add(addedContactToReceiver);
+            db.ContactRequests.Remove(confirmedContactRequest);
+            db.SaveChanges();
+            return new SuccessResult(Messages.ContactRequestConfirmed);
+        }
+
+        [HttpPost("deletecontactrequest")]
+        public IResult DeleteContactRequest(ContactRequestDto contactRequestDto)
+        {
+            using WordBookContext db = new();
+            ContactRequest deletedContactRequest = db.ContactRequests.Where(c => c.ContactRequestId == contactRequestDto.ContactRequestId).SingleOrDefault();
+            if (deletedContactRequest == null)
+            {
+                return new ErrorResult(Messages.ContactRequestNotFound);
+            }
+            db.ContactRequests.Remove(deletedContactRequest);
+            db.SaveChanges();
+            return new SuccessResult(Messages.ContactRequestDeleted);
+        }
+        #endregion
+
         #region Contacts
         [HttpGet("getallcontactsbyuserid/{userId}")]
         public IResult GetAllContactsByUserId(int userId)
@@ -714,41 +839,6 @@ namespace WordBook.Controllers
                 return new ErrorResult(Messages.ContactNotFound);
             }
             return new SuccessDataResult<List<ContactDto>>(contacts, Messages.ContactsListed);
-        }
-
-        [HttpPost("addcontact")]
-        public IResult AddContact(ContactDto contactDto)
-        {
-            using WordBookContext db = new();
-            if (db.Contacts.Any(c => c.FriendId == contactDto.FriendId))
-            {
-                return new ErrorResult(Messages.ContactAlreadyExists);
-            }
-            Contact addedContact = new()
-            {
-                ContactId = 0,
-                UserId = contactDto.UserId,
-                FriendId = contactDto.FriendId,
-                CreatedAt = System.DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString()
-            };
-            db.Contacts.Add(addedContact);
-            db.SaveChanges();
-            return new SuccessResult(Messages.ContactAdded);
-        }
-
-        [HttpPost("updatecontact")]
-        public IResult UpdateContact(ContactDto contactDto)
-        {
-            using WordBookContext db = new();
-            Contact updatedContact = db.Contacts.Where(c => c.ContactId == contactDto.ContactId).SingleOrDefault();
-            if (updatedContact == null)
-            {
-                return new ErrorResult(Messages.ContactNotFound);
-            }
-            updatedContact.FriendId = contactDto.FriendId;
-            updatedContact.CreatedAt = System.DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString();
-            db.SaveChanges();
-            return new SuccessResult(Messages.ContactUpdated);
         }
 
         [HttpPost("deletecontact")]
@@ -857,26 +947,31 @@ namespace WordBook.Controllers
             return new SuccessResult(Messages.WordShared);
         }
 
-        [HttpPost("addsharedword")]
-        public IResult AddSharedWord(SharedWordDto sharedWordDto)
+        [HttpPost("confirmsharedword")]
+        public IResult ConfirmSharedWord(SharedWordDto sharedWordDto)
         {
             using WordBookContext db = new();
-            Word addedWord = db.Words.Where(w => w.WordId == sharedWordDto.WordId).SingleOrDefault();
+            SharedWord confirmedSharedWord = db.SharedWords.Where(s => s.SharedWordId == sharedWordDto.SharedWordId).SingleOrDefault();
+            if (confirmedSharedWord == null)
+            {
+                return new ErrorResult(Messages.SharedWordNotFound);
+            }
+            Word addedWord = db.Words.Where(w => w.WordId == confirmedSharedWord.WordId).SingleOrDefault();
             if (addedWord == null)
             {
                 return new ErrorResult(Messages.WordNotFound);
             }
+            Category sharedCategory = db.Categories.Where(c => c.UserId == confirmedSharedWord.ReceiverId && c.Name == "Shared").SingleOrDefault();
+            Type sharedType = db.Types.Where(t => t.UserId == confirmedSharedWord.ReceiverId && t.Name == "Shared").SingleOrDefault();
             addedWord.WordId = 0;
-            addedWord.UserId = sharedWordDto.ReceiverId;
+            addedWord.UserId = confirmedSharedWord.ReceiverId;
+            addedWord.CategoryId = sharedCategory.CategoryId;
+            addedWord.TypeId = sharedType.TypeId;
+            addedWord.BoxId = 1;
             db.Words.Add(addedWord);
-            SharedWord deletedSharedWord = db.SharedWords.Where(s => s.SharedWordId == sharedWordDto.SharedWordId).SingleOrDefault();
-            if (deletedSharedWord == null)
-            {
-                return new ErrorResult(Messages.SharedWordNotFound);
-            }
-            db.SharedWords.Remove(deletedSharedWord);
+            db.SharedWords.Remove(confirmedSharedWord);
             db.SaveChanges();
-            return new SuccessResult(Messages.SharedWordAdded);
+            return new SuccessResult(Messages.SharedWordConfirmed);
         }
 
         [HttpPost("deletesharedword")]
