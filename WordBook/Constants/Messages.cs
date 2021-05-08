@@ -18,8 +18,8 @@ namespace WordBook.Constants
         #endregion
 
         #region Categories
-        public const string CategoriesListed = "All categories has been listed.";
-        public const string CategoryNotFound = "No categories found.";
+        public const string CategoriesListed = "Categories have been listed.";
+        public const string CategoryNotFound = "The category is not found.";
         public const string CategoryAdded = "The category has been added.";
         public const string CategoryUpdated = "The category has been updated.";
         public const string CategoryDeleted = "The category has been deleted.";
@@ -28,8 +28,8 @@ namespace WordBook.Constants
         #endregion
 
         #region Types
-        public const string TypesListed = "All types has been listed.";
-        public const string TypeNotFound = "No types found.";
+        public const string TypesListed = "Types have been listed.";
+        public const string TypeNotFound = "The type is not found.";
         public const string TypeAdded = "The type has been added.";
         public const string TypeUpdated = "The type has been updated.";
         public const string TypeDeleted = "The type has been deleted.";
@@ -38,8 +38,8 @@ namespace WordBook.Constants
         #endregion
 
         #region Boxes
-        public const string BoxesListed = "All boxes has been listed.";
-        public const string BoxNotFound = "No boxes found.";
+        public const string BoxesListed = "Boxes have been listed.";
+        public const string BoxNotFound = "The box is not found.";
         public const string BoxAdded = "The box has been added.";
         public const string BoxUpdated = "The box has been updated.";
         public const string BoxDeleted = "The box has been deleted.";
@@ -48,8 +48,8 @@ namespace WordBook.Constants
         #endregion
 
         #region Words
-        public const string WordsListed = "All words has been listed.";
-        public const string WordNotFound = "No words found.";
+        public const string WordsListed = "Words have been listed.";
+        public const string WordNotFound = "The word is not found.";
         public const string WordAdded = "The word has been added.";
         public const string WordUpdated = "The word has been updated.";
         public const string WordDeleted = "The word has been deleted.";
@@ -57,8 +57,8 @@ namespace WordBook.Constants
         #endregion
 
         #region AchievementTypes
-        public const string AchievementTypesListed = "All achievement types has been listed.";
-        public const string AchievementTypeNotFound = "No achievement types found.";
+        public const string AchievementTypesListed = "Achievement types have been listed.";
+        public const string AchievementTypeNotFound = "The achievement type is not found.";
         public const string AchievementTypeAdded = "The achievement type has been added.";
         public const string AchievementTypeUpdated = "The achievement type has been updated.";
         public const string AchievementTypeDeleted = "The achievement type has been deleted.";
@@ -67,8 +67,8 @@ namespace WordBook.Constants
         #endregion
 
         #region Achievements
-        public const string AchievementsListed = "All achievements has been listed.";
-        public const string AchievementNotFound = "No achievements found.";
+        public const string AchievementsListed = "Achievements have been listed.";
+        public const string AchievementNotFound = "The achievement is not found.";
         public const string AchievementAdded = "The achievement has been added.";
         public const string AchievementUpdated = "The achievement has been updated.";
         public const string AchievementDeleted = "The achievement has been deleted.";
@@ -76,8 +76,8 @@ namespace WordBook.Constants
         #endregion
 
         #region RankTypes
-        public const string RankTypesListed = "All rank types has been listed.";
-        public const string RankTypeNotFound = "No rank types found.";
+        public const string RankTypesListed = "Rank types have been listed.";
+        public const string RankTypeNotFound = "The rank type is not found.";
         public const string RankTypeAdded = "The rank type has been added.";
         public const string RankTypeUpdated = "The rank type has been updated.";
         public const string RankTypeDeleted = "The rank type has been deleted.";
@@ -86,8 +86,8 @@ namespace WordBook.Constants
         #endregion
 
         #region Rankings
-        public const string RankingsListed = "All rankings has been listed.";
-        public const string RankingsNotFound = "No rankings found.";
+        public const string RankingsListed = "Rankings have been listed.";
+        public const string RankingNotFound = "The ranking is not found.";
         public const string RankingAdded = "The ranking has been added.";
         public const string RankingUpdated = "The ranking has been updated.";
         public const string RankingDeleted = "The ranking has been deleted.";
@@ -95,8 +95,8 @@ namespace WordBook.Constants
         #endregion
 
         #region Contacts
-        public const string ContactsListed = "All contacts has been listed.";
-        public const string ContactsNotFound = "No contacts found.";
+        public const string ContactsListed = "Contacts have been listed.";
+        public const string ContactNotFound = "The contact is not found.";
         public const string ContactAdded = "The contact has been added.";
         public const string ContactUpdated = "The contact has been updated.";
         public const string ContactDeleted = "The contact has been deleted.";
@@ -104,10 +104,18 @@ namespace WordBook.Constants
         #endregion
 
         #region Messages
-        public const string MessagesListed = "All messages has been listed.";
-        public const string MessagesNotFound = "No messages found.";
+        public const string MessagesListed = "Messages have been listed.";
+        public const string MessageNotFound = "The message is not found.";
         public const string MessageSent = "The message has been sent.";
         public const string MessageDeleted = "The message has been deleted.";
+        #endregion
+
+        #region SharedWords
+        public const string SharedWordsListed = "Shared words have been listed.";
+        public const string SharedWordNotFound = "The shared word is not found.";
+        public const string WordShared = "The word has been shared.";
+        public const string SharedWordAdded = "The shared word has been added to words.";
+        public const string SharedWordDeleted = "The shared word has been deleted.";
         #endregion
     }
 }
