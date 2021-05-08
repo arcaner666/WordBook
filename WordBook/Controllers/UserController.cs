@@ -736,5 +736,58 @@ namespace WordBook.Controllers
             return new SuccessResult(Messages.ContactDeleted);
         }
         #endregion
+
+        #region Messages
+        [HttpGet("getallmessagesbyreceiverid/{receiverId}")]
+        public IResult GetAllMessagesByReceiverId(int receiverId)
+        {
+            using WordBookContext db = new();
+            List<MessageDto> messages = db.Messages.Where(m => m.ReceiverId == receiverId).Select(message =>
+            new MessageDto
+            {
+                MessageId = message.MessageId,
+                SenderId = message.SenderId,
+                ReceiverId = message.ReceiverId,
+                Message1 = message.Message1,
+                CreatedAt = message.CreatedAt
+            }).ToList();
+            if (!messages.Any())
+            {
+                return new ErrorResult(Messages.MessagesNotFound);
+            }
+            return new SuccessDataResult<List<MessageDto>>(messages, Messages.MessagesListed);
+        }
+
+        [HttpPost("sendmessage")]
+        public IResult SendMessage(MessageDto messageDto)
+        {
+            using WordBookContext db = new();
+            Message sentMessage = new()
+            {
+                MessageId = 0,
+                SenderId = messageDto.SenderId,
+                ReceiverId = messageDto.ReceiverId,
+                Message1 = messageDto.Message1,
+                CreatedAt = System.DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString()
+            };
+            db.Messages.Add(sentMessage);
+            db.SaveChanges();
+            return new SuccessResult(Messages.MessageSent);
+        }
+
+        [HttpPost("deletemessage")]
+        public IResult DeleteMessage(MessageDto messageDto)
+        {
+            using WordBookContext db = new();
+            Message deletedMessage = db.Messages.Where(m => m.MessageId == messageDto.MessageId).SingleOrDefault();
+            if (deletedMessage == null)
+            {
+                return new ErrorResult(Messages.MessagesNotFound);
+            }
+            db.Messages.Remove(deletedMessage);
+            db.SaveChanges();
+            return new SuccessResult(Messages.MessageDeleted);
+        }
+        #endregion
     }
 }

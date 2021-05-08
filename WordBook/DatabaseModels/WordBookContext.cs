@@ -53,13 +53,13 @@ namespace WordBook.DatabaseModels
                     .WithMany(p => p.Achievements)
                     .HasForeignKey(d => d.AchievementTypeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Achieveme__Achie__656C112C");
+                    .HasConstraintName("FK__Achieveme__Achie__5BE2A6F2");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Achievements)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Achieveme__UserI__6477ECF3");
+                    .HasConstraintName("FK__Achieveme__UserI__5AEE82B9");
             });
 
             modelBuilder.Entity<AchievementType>(entity =>
@@ -86,7 +86,7 @@ namespace WordBook.DatabaseModels
                     .WithMany(p => p.Categories)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Categorie__UserI__534D60F1");
+                    .HasConstraintName("FK__Categorie__UserI__4BAC3F29");
             });
 
             modelBuilder.Entity<Contact>(entity =>
@@ -99,13 +99,13 @@ namespace WordBook.DatabaseModels
                     .WithMany(p => p.ContactFriends)
                     .HasForeignKey(d => d.FriendId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Contacts__Friend__4CA06362");
+                    .HasConstraintName("FK__Contacts__Friend__656C112C");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.ContactUsers)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Contacts__UserId__4BAC3F29");
+                    .HasConstraintName("FK__Contacts__UserId__6477ECF3");
             });
 
             modelBuilder.Entity<Message>(entity =>
@@ -116,20 +116,19 @@ namespace WordBook.DatabaseModels
 
                 entity.Property(e => e.Message1)
                     .IsRequired()
-                    .HasMaxLength(200)
-                    .HasColumnName("Message");
+                    .HasMaxLength(200);
 
                 entity.HasOne(d => d.Receiver)
                     .WithMany(p => p.MessageReceivers)
                     .HasForeignKey(d => d.ReceiverId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Messages__Receiv__5070F446");
+                    .HasConstraintName("FK__Messages__Receiv__693CA210");
 
                 entity.HasOne(d => d.Sender)
                     .WithMany(p => p.MessageSenders)
                     .HasForeignKey(d => d.SenderId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Messages__Sender__4F7CD00D");
+                    .HasConstraintName("FK__Messages__Sender__68487DD7");
             });
 
             modelBuilder.Entity<RankType>(entity =>
@@ -142,7 +141,7 @@ namespace WordBook.DatabaseModels
             modelBuilder.Entity<Ranking>(entity =>
             {
                 entity.HasKey(e => e.RankId)
-                    .HasName("PK__Rankings__B37AF8769FBBEC49");
+                    .HasName("PK__Rankings__B37AF8765B709348");
 
                 entity.Property(e => e.UpdatedAt)
                     .IsRequired()
@@ -152,13 +151,13 @@ namespace WordBook.DatabaseModels
                     .WithMany(p => p.Rankings)
                     .HasForeignKey(d => d.RankTypeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Rankings__RankTy__693CA210");
+                    .HasConstraintName("FK__Rankings__RankTy__619B8048");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Rankings)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Rankings__UserId__68487DD7");
+                    .HasConstraintName("FK__Rankings__UserId__60A75C0F");
             });
 
             modelBuilder.Entity<SharedWord>(entity =>
@@ -196,7 +195,7 @@ namespace WordBook.DatabaseModels
                     .WithMany(p => p.Types)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Types__UserId__5629CD9C");
+                    .HasConstraintName("FK__Types__UserId__4E88ABD4");
             });
 
             modelBuilder.Entity<User>(entity =>
@@ -260,25 +259,25 @@ namespace WordBook.DatabaseModels
                     .WithMany(p => p.Words)
                     .HasForeignKey(d => d.BoxId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Words__BoxId__5DCAEF64");
+                    .HasConstraintName("FK__Words__BoxId__5629CD9C");
 
                 entity.HasOne(d => d.Category)
                     .WithMany(p => p.Words)
                     .HasForeignKey(d => d.CategoryId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Words__CategoryI__5BE2A6F2");
+                    .HasConstraintName("FK__Words__CategoryI__5441852A");
 
                 entity.HasOne(d => d.Type)
                     .WithMany(p => p.Words)
                     .HasForeignKey(d => d.TypeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Words__TypeId__5CD6CB2B");
+                    .HasConstraintName("FK__Words__TypeId__5535A963");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Words)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Words__UserId__5AEE82B9");
+                    .HasConstraintName("FK__Words__UserId__534D60F1");
             });
 
             OnModelCreatingPartial(modelBuilder);

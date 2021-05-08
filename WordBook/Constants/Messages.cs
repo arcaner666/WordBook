@@ -102,5 +102,12 @@ namespace WordBook.Constants
         public const string ContactDeleted = "The contact has been deleted.";
         public const string ContactAlreadyExists = "This contact already exists!";
         #endregion
+
+        #region Messages
+        public const string MessagesListed = "All messages has been listed.";
+        public const string MessagesNotFound = "No messages found.";
+        public const string MessageSent = "The message has been sent.";
+        public const string MessageDeleted = "The message has been deleted.";
+        #endregion
     }
 }
