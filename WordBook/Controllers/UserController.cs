@@ -18,24 +18,75 @@ namespace WordBook.Controllers
         public IResult Startup()
         {
             using WordBookContext db = new();
+            // Default Boxes
             Box unknownBox = new()
             {
                 BoxId = 0,
-                Name = "unknown",
+                Name = "Unknown",
             };
             db.Boxes.Add(unknownBox);
             Box barelyKnownBox = new()
             {
                 BoxId = 0,
-                Name = "barely known",
+                Name = "Barely known",
             };
             db.Boxes.Add(barelyKnownBox);
             Box knownBox = new()
             {
                 BoxId = 0,
-                Name = "known",
+                Name = "Known",
             };
             db.Boxes.Add(knownBox);
+            // Default Achievements
+            AchievementType categoryAchievementType = new()
+            {
+                AchievementTypeId = 0,
+                Name = "Category"
+            };
+            db.AchievementTypes.Add(categoryAchievementType);
+            AchievementType typeAchievementType = new()
+            {
+                AchievementTypeId = 0,
+                Name = "Type"
+            };
+            db.AchievementTypes.Add(typeAchievementType);
+            AchievementType wordAchievementType = new()
+            {
+                AchievementTypeId = 0,
+                Name = "Word"
+            };
+            db.AchievementTypes.Add(wordAchievementType);
+            AchievementType rightAnsweredQuestionAchievementType = new()
+            {
+                AchievementTypeId = 0,
+                Name = "Right Answered Question"
+            };
+            db.AchievementTypes.Add(rightAnsweredQuestionAchievementType);
+            AchievementType wrongAnsweredQuestionAchievementType = new()
+            {
+                AchievementTypeId = 0,
+                Name = "Wrong Answered Question"
+            };
+            db.AchievementTypes.Add(wrongAnsweredQuestionAchievementType);
+            AchievementType askedQuestionAchievementType = new()
+            {
+                AchievementTypeId = 0,
+                Name = "Asked Question"
+            };
+            db.AchievementTypes.Add(askedQuestionAchievementType);
+            // Default Rank Types
+            RankType wordTestRankType = new()
+            {
+                RankTypeId = 0,
+                Name = "Word Test"
+            };
+            db.RankTypes.Add(wordTestRankType);
+            RankType wordGuessingGameRankType = new()
+            {
+                RankTypeId = 0,
+                Name = "Word Guessing Game"
+            };
+            db.RankTypes.Add(wordGuessingGameRankType);
             db.SaveChanges();
             return new SuccessResult(Messages.StartupComplete);
         }
@@ -68,6 +119,7 @@ namespace WordBook.Controllers
             };
             db.Users.Add(user);
             db.SaveChanges();
+            // Default Categories
             Category generalCategory = new()
             {
                 CategoryId = 0,
@@ -82,6 +134,7 @@ namespace WordBook.Controllers
                 Name = "Shared"
             };
             db.Categories.Add(sharedCategory);
+            // Default Types
             Type generalType = new()
             {
                 TypeId = 0,
@@ -96,6 +149,80 @@ namespace WordBook.Controllers
                 Name = "Shared"
             };
             db.Types.Add(sharedType);
+            // Default Achievements
+            Achievement categoryAchievement = new()
+            {
+                AchievementId = 0,
+                UserId = user.UserId,
+                AchievementTypeId = 1,
+                Score = 0,
+                UpdatedAt = System.DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString()
+            };
+            db.Achievements.Add(categoryAchievement);
+            Achievement typeAchievement = new()
+            {
+                AchievementId = 0,
+                UserId = user.UserId,
+                AchievementTypeId = 2,
+                Score = 0,
+                UpdatedAt = System.DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString()
+            };
+            db.Achievements.Add(typeAchievement);
+            Achievement wordAchievement = new()
+            {
+                AchievementId = 0,
+                UserId = user.UserId,
+                AchievementTypeId = 3,
+                Score = 0,
+                UpdatedAt = System.DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString()
+            };
+            db.Achievements.Add(wordAchievement);
+            Achievement rightAnsweredQuestionAchievement = new()
+            {
+                AchievementId = 0,
+                UserId = user.UserId,
+                AchievementTypeId = 4,
+                Score = 0,
+                UpdatedAt = System.DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString()
+            };
+            db.Achievements.Add(rightAnsweredQuestionAchievement);
+            Achievement wrongAnsweredQuestionAchievement = new()
+            {
+                AchievementId = 0,
+                UserId = user.UserId,
+                AchievementTypeId = 5,
+                Score = 0,
+                UpdatedAt = System.DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString()
+            };
+            db.Achievements.Add(wrongAnsweredQuestionAchievement);
+            Achievement askedQuestionAchievement = new()
+            {
+                AchievementId = 0,
+                UserId = user.UserId,
+                AchievementTypeId = 6,
+                Score = 0,
+                UpdatedAt = System.DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString()
+            };
+            db.Achievements.Add(askedQuestionAchievement);
+            // Default Rankings
+            Ranking wordTestRanking = new()
+            {
+                RankId = 0,
+                UserId = user.UserId,
+                RankTypeId = 1,
+                Score = 0,
+                UpdatedAt = System.DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString()
+            };
+            db.Rankings.Add(wordTestRanking);
+            Ranking wordGuessingGameRanking = new()
+            {
+                RankId = 0,
+                UserId = user.UserId,
+                RankTypeId = 2,
+                Score = 0,
+                UpdatedAt = System.DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString()
+            };
+            db.Rankings.Add(wordGuessingGameRanking);
             db.SaveChanges();
             return new SuccessResult(Messages.RegistrationSuccessful);
         }

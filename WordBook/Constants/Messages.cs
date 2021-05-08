@@ -7,7 +7,7 @@ namespace WordBook.Constants
 {
     public static class Messages
     {
-        #region Registration
+        #region Startup
         public const string StartupComplete = "The startup process have been completed.";
         #endregion
 
