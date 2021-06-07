@@ -92,7 +92,7 @@ namespace WordBook.Controllers
         }
         #endregion
 
-        #region Registration
+        #region Authorization
         [HttpPost("register")]
         public IResult Register(UserDto userDto)
         {
@@ -226,9 +226,7 @@ namespace WordBook.Controllers
             db.SaveChanges();
             return new SuccessResult(Messages.RegistrationSuccessful);
         }
-        #endregion
 
-        #region Login
         [HttpPost("login")]
         public IResult Login(UserDto userDto)
         {
@@ -255,6 +253,45 @@ namespace WordBook.Controllers
                 return new ErrorResult(Messages.UserNameOrPasswordInvalid);
             }
             return new SuccessDataResult<UserDto>(responseUserDto, Messages.LoginSuccessful);
+        }
+
+        [HttpPost("updateaccount")]
+        public IResult UpdateAccount(UserDto userDto)
+        {
+            using WordBookContext db = new();
+            User user = db.Users.Where(u => u.UserId == userDto.UserId).SingleOrDefault();
+            if (user == null)
+            {
+                return new ErrorResult(Messages.UserNotFound);
+            }
+            user.Password = userDto.Password;
+            user.FirstName = userDto.FirstName;
+            user.LastName = userDto.LastName;
+            user.DateOfBirth = userDto.DateOfBirth;
+            user.Email = userDto.Email;
+            user.Phone = userDto.Phone;
+            user.UpdatedAt = System.DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString();
+            db.SaveChanges();
+            return new SuccessResult(Messages.AccountUpdated);
+        }
+
+        [HttpPost("updatepassword")]
+        public IResult UpdatePassword(UpdatePasswordDto updatePasswordDto)
+        {
+            using WordBookContext db = new();
+            User user = db.Users.Where(u => u.UserId == updatePasswordDto.UserId).SingleOrDefault();
+            if (user == null)
+            {
+                return new ErrorResult(Messages.UserNotFound);
+            }
+            if (user.Password != updatePasswordDto.OldPassword)
+            {
+                return new ErrorResult(Messages.OldPasswordIsWrong);
+            }
+            user.Password = updatePasswordDto.NewPassword;
+            user.UpdatedAt = System.DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString();
+            db.SaveChanges();
+            return new SuccessResult(Messages.AccountUpdated);
         }
         #endregion
 
