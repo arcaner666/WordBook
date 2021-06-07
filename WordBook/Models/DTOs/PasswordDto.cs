@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace WordBook.Models.DTOs
 {
-    public class UpdatePasswordDto
+    public class PasswordDto
     {
         public int UserId { get; set; }
         public string OldPassword { get; set; }

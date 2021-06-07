@@ -255,8 +255,36 @@ namespace WordBook.Controllers
             return new SuccessDataResult<UserDto>(responseUserDto, Messages.LoginSuccessful);
         }
 
-        [HttpPost("updateaccount")]
-        public IResult UpdateAccount(UserDto userDto)
+        [HttpGet("getuserbyuserid/{userId}")]
+        public IResult GetUserByUserId(int userId)
+        {
+            using WordBookContext db = new();
+            UserDto userDto = db.Users.Where(u => u.UserId == userId).Select(user =>
+            new UserDto
+            {
+                UserId = user.UserId,
+                UserName = user.UserName,
+                Password = user.Password,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                DateOfBirth = user.DateOfBirth,
+                Email = user.Email,
+                Phone = user.Phone,
+                IsActive = user.IsActive,
+                IsBlocked = user.IsBlocked,
+                IsAdmin = user.IsAdmin,
+                CreatedAt = user.CreatedAt,
+                UpdatedAt = user.UpdatedAt
+            }).SingleOrDefault();
+            if (userDto == null)
+            {
+                return new ErrorResult(Messages.UserNotFound);
+            }
+            return new SuccessDataResult<UserDto>(userDto, Messages.UserFound);
+        }
+
+        [HttpPost("updateprofile")]
+        public IResult UpdateProfile(UserDto userDto)
         {
             using WordBookContext db = new();
             User user = db.Users.Where(u => u.UserId == userDto.UserId).SingleOrDefault();
@@ -272,26 +300,26 @@ namespace WordBook.Controllers
             user.Phone = userDto.Phone;
             user.UpdatedAt = System.DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString();
             db.SaveChanges();
-            return new SuccessResult(Messages.AccountUpdated);
+            return new SuccessResult(Messages.ProfileUpdated);
         }
 
         [HttpPost("updatepassword")]
-        public IResult UpdatePassword(UpdatePasswordDto updatePasswordDto)
+        public IResult UpdatePassword(PasswordDto passwordDto)
         {
             using WordBookContext db = new();
-            User user = db.Users.Where(u => u.UserId == updatePasswordDto.UserId).SingleOrDefault();
+            User user = db.Users.Where(u => u.UserId == passwordDto.UserId).SingleOrDefault();
             if (user == null)
             {
                 return new ErrorResult(Messages.UserNotFound);
             }
-            if (user.Password != updatePasswordDto.OldPassword)
+            if (user.Password != passwordDto.OldPassword)
             {
                 return new ErrorResult(Messages.OldPasswordIsWrong);
             }
-            user.Password = updatePasswordDto.NewPassword;
+            user.Password = passwordDto.NewPassword;
             user.UpdatedAt = System.DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString();
             db.SaveChanges();
-            return new SuccessResult(Messages.AccountUpdated);
+            return new SuccessResult(Messages.PasswordUpdated);
         }
         #endregion
 

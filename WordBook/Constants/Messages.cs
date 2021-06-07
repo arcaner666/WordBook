@@ -16,8 +16,9 @@ namespace WordBook.Constants
         public const string UserNameAlreadyInUse = "This user name is already in use!";
         public const string LoginSuccessful = "Login is successful.";
         public const string UserNameOrPasswordInvalid = "User name or password is invalid!";
-        public const string AccountUpdated = "Account details updated.";
+        public const string UserFound = "The user is found.";
         public const string UserNotFound = "The user is not found.";
+        public const string ProfileUpdated = "Profile updated.";
         public const string OldPasswordIsWrong = "Old password is wrong!";
         public const string PasswordUpdated = "The password is updated.";
         #endregion
