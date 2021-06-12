@@ -29,6 +29,7 @@ namespace WordBook.Constants
         public const string CategoryAdded = "The category has been added.";
         public const string CategoryUpdated = "The category has been updated.";
         public const string CategoryDeleted = "The category has been deleted.";
+        public const string CategoriesDeleted = "The categories have been deleted.";
         public const string CategoryAlreadyExists = "This category already exists!";
         public const string CanNotDeleteCategoryDueToWords = "This category cannot be deleted because there are words in this category!";
         public const string CanNotUpdateSystemCategories = "System categories cannot be updated!";
@@ -41,6 +42,7 @@ namespace WordBook.Constants
         public const string TypeAdded = "The type has been added.";
         public const string TypeUpdated = "The type has been updated.";
         public const string TypeDeleted = "The type has been deleted.";
+        public const string TypesDeleted = "The types have been deleted.";
         public const string TypeAlreadyExists = "This type already exists!";
         public const string CanNotDeleteTypeDueToWords = "This type cannot be deleted because there are words in this type!";
         public const string CanNotUpdateSystemTypes = "System types cannot be updated!";
@@ -63,6 +65,7 @@ namespace WordBook.Constants
         public const string WordAdded = "The word has been added.";
         public const string WordUpdated = "The word has been updated.";
         public const string WordDeleted = "The word has been deleted.";
+        public const string WordsDeleted = "The words have been deleted.";
         public const string WordAlreadyExists = "This word already exists!";
         #endregion
 

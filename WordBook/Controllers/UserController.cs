@@ -400,6 +400,31 @@ namespace WordBook.Controllers
             db.SaveChanges();
             return new SuccessResult(Messages.CategoryDeleted);
         }
+
+        [HttpPost("deletecategories")]
+        public IResult DeleteCategories(CategoryDto[] categoryDtos)
+        {
+            using WordBookContext db = new();
+            for (int i = 0; i < categoryDtos.Length; i++)
+            {
+                Category deletedCategory = db.Categories.Where(c => c.CategoryId == categoryDtos[i].CategoryId).SingleOrDefault();
+                if (deletedCategory == null)
+                {
+                    return new ErrorResult(Messages.CategoryNotFound);
+                }
+                if (deletedCategory.Name == "General" || deletedCategory.Name == "Shared")
+                {
+                    return new ErrorResult(Messages.CanNotDeleteSystemCategories);
+                }
+                if (db.Words.Any(w => w.CategoryId == categoryDtos[i].CategoryId))
+                {
+                    return new ErrorResult(Messages.CanNotDeleteCategoryDueToWords);
+                }
+                db.Categories.Remove(deletedCategory);
+                db.SaveChanges();
+            }
+            return new SuccessResult(Messages.CategoriesDeleted);
+        }
         #endregion
 
         #region Types
@@ -478,6 +503,31 @@ namespace WordBook.Controllers
             db.Types.Remove(deletedType);
             db.SaveChanges();
             return new SuccessResult(Messages.TypeDeleted);
+        }
+
+        [HttpPost("deletetypes")]
+        public IResult DeleteTypes(TypeDto[] typeDtos)
+        {
+            using WordBookContext db = new();
+            for (int i = 0; i < typeDtos.Length; i++)
+            {
+                Type deletedType = db.Types.Where(t => t.TypeId == typeDtos[i].TypeId).SingleOrDefault();
+                if (deletedType == null)
+                {
+                    return new ErrorResult(Messages.TypeNotFound);
+                }
+                if (deletedType.Name == "General" || deletedType.Name == "Shared")
+                {
+                    return new ErrorResult(Messages.CanNotDeleteSystemTypes);
+                }
+                if (db.Words.Any(w => w.TypeId == typeDtos[i].TypeId))
+                {
+                    return new ErrorResult(Messages.CanNotDeleteTypeDueToWords);
+                }
+                db.Types.Remove(deletedType);
+                db.SaveChanges();
+            }
+            return new SuccessResult(Messages.TypesDeleted);
         }
         #endregion
 
@@ -644,6 +694,23 @@ namespace WordBook.Controllers
             db.Words.Remove(deletedWord);
             db.SaveChanges();
             return new SuccessResult(Messages.WordDeleted);
+        }
+
+        [HttpPost("deletewords")]
+        public IResult DeleteWords(WordDto[] wordDtos)
+        {
+            using WordBookContext db = new();
+            for (int i = 0; i < wordDtos.Length; i++)
+            {
+                Word deletedWord = db.Words.Where(w => w.WordId == wordDtos[i].WordId).SingleOrDefault();
+                if (deletedWord == null)
+                {
+                    return new ErrorResult(Messages.WordNotFound);
+                }
+                db.Words.Remove(deletedWord);
+                db.SaveChanges();
+            }
+            return new SuccessResult(Messages.WordsDeleted);
         }
         #endregion
 
