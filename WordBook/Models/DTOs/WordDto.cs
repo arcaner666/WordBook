@@ -16,5 +16,9 @@ namespace WordBook.Models.DTOs
         public string Meaning1 { get; set; }
         public string Meaning2 { get; set; }
         public string Meaning3 { get; set; }
+
+        // Extras
+        public string CategoryName { get; set; }
+        public string TypeName { get; set; }
     }
 }

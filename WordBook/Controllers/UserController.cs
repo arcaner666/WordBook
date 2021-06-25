@@ -616,7 +616,9 @@ namespace WordBook.Controllers
                 Word1 = word.Word1,
                 Meaning1 = word.Meaning1,
                 Meaning2 = word.Meaning2,
-                Meaning3 = word.Meaning3
+                Meaning3 = word.Meaning3,
+                CategoryName = word.Category.Name,
+                TypeName = word.Type.Name
             }).ToList();
             if (!words.Any())
             {
