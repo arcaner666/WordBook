@@ -9,6 +9,7 @@ namespace WordBook.Constants
     {
         #region Startup
         public const string StartupComplete = "The startup process have been completed.";
+        public const string PacksLoaded = "All packs have been loaded.";
         #endregion
 
         #region Authorization

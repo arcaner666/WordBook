@@ -90,6 +90,468 @@ namespace WordBook.Controllers
             db.SaveChanges();
             return new SuccessResult(Messages.StartupComplete);
         }
+
+        //[HttpGet("getpacks/{userId}")]
+        //public IResult GetPacks(int userId)
+        //{
+        //    using WordBookContext db = new();
+            
+        //    // Types Pack
+        //    Type type1 = new()
+        //    {
+        //        TypeId = 0,
+        //        UserId = userId,
+        //        Name = "İsim"
+        //    };
+        //    db.Types.Add(type1);
+        //    Type type2 = new()
+        //    {
+        //        TypeId = 0,
+        //        UserId = userId,
+        //        Name = "Sıfat"
+        //    };
+        //    db.Types.Add(type2);
+        //    Type type3 = new()
+        //    {
+        //        TypeId = 0,
+        //        UserId = userId,
+        //        Name = "Fiil"
+        //    };
+        //    db.Types.Add(type3);
+        //    Type type4 = new()
+        //    {
+        //        TypeId = 0,
+        //        UserId = userId,
+        //        Name = "Zamir"
+        //    };
+        //    db.Types.Add(type4);
+        //    Type type5 = new()
+        //    {
+        //        TypeId = 0,
+        //        UserId = userId,
+        //        Name = "Zarf"
+        //    };
+        //    db.Types.Add(type5);
+        //    Type type6 = new()
+        //    {
+        //        TypeId = 0,
+        //        UserId = userId,
+        //        Name = "Edat"
+        //    };
+        //    db.Types.Add(type6);
+        //    Type type7 = new()
+        //    {
+        //        TypeId = 0,
+        //        UserId = userId,
+        //        Name = "Bağlaç"
+        //    };
+        //    db.Types.Add(type7);
+        //    Type type8 = new()
+        //    {
+        //        TypeId = 0,
+        //        UserId = userId,
+        //        Name = "Ünlem"
+        //    };
+        //    db.Types.Add(type8);
+        //    // It is necessary for returning CategoryId and TypeId.
+        //    db.SaveChanges();
+        //    // Word Pack
+        //    // Günler
+        //    Word word1 = new()
+        //    {
+        //        WordId = 0,
+        //        UserId = userId,
+        //        CategoryId = category1.CategoryId,
+        //        TypeId = type1.TypeId,
+        //        BoxId = 1,
+        //        Word1 = "monday",
+        //        Meaning1 = "pazartesi",
+        //        Meaning2 = "",
+        //        Meaning3 = ""
+        //    };
+        //    db.Words.Add(word1);
+        //    Word word2 = new()
+        //    {
+        //        WordId = 0,
+        //        UserId = userId,
+        //        CategoryId = category1.CategoryId,
+        //        TypeId = type1.TypeId,
+        //        BoxId = 1,
+        //        Word1 = "tuesday",
+        //        Meaning1 = "salı",
+        //        Meaning2 = "",
+        //        Meaning3 = ""
+        //    };
+        //    db.Words.Add(word2);
+        //    Word word3 = new()
+        //    {
+        //        WordId = 0,
+        //        UserId = userId,
+        //        CategoryId = category1.CategoryId,
+        //        TypeId = type1.TypeId,
+        //        BoxId = 1,
+        //        Word1 = "wednesday",
+        //        Meaning1 = "çarşamba",
+        //        Meaning2 = "",
+        //        Meaning3 = ""
+        //    };
+        //    db.Words.Add(word3);
+        //    Word word4 = new()
+        //    {
+        //        WordId = 0,
+        //        UserId = userId,
+        //        CategoryId = category1.CategoryId,
+        //        TypeId = type1.TypeId,
+        //        BoxId = 1,
+        //        Word1 = "thursday",
+        //        Meaning1 = "perşembe",
+        //        Meaning2 = "",
+        //        Meaning3 = ""
+        //    };
+        //    db.Words.Add(word4);
+        //    Word word5 = new()
+        //    {
+        //        WordId = 0,
+        //        UserId = userId,
+        //        CategoryId = category1.CategoryId,
+        //        TypeId = type1.TypeId,
+        //        BoxId = 1,
+        //        Word1 = "friday",
+        //        Meaning1 = "cuma",
+        //        Meaning2 = "",
+        //        Meaning3 = ""
+        //    };
+        //    db.Words.Add(word5);
+        //    Word word6 = new()
+        //    {
+        //        WordId = 0,
+        //        UserId = userId,
+        //        CategoryId = category1.CategoryId,
+        //        TypeId = type1.TypeId,
+        //        BoxId = 1,
+        //        Word1 = "saturday",
+        //        Meaning1 = "cumartesi",
+        //        Meaning2 = "",
+        //        Meaning3 = ""
+        //    };
+        //    db.Words.Add(word6);
+        //    Word word7 = new()
+        //    {
+        //        WordId = 0,
+        //        UserId = userId,
+        //        CategoryId = category1.CategoryId,
+        //        TypeId = type1.TypeId,
+        //        BoxId = 1,
+        //        Word1 = "sunday",
+        //        Meaning1 = "pazar",
+        //        Meaning2 = "",
+        //        Meaning3 = ""
+        //    };
+        //    db.Words.Add(word7);
+        //    // Mevsimler
+        //    Word word8 = new()
+        //    {
+        //        WordId = 0,
+        //        UserId = userId,
+        //        CategoryId = category2.CategoryId,
+        //        TypeId = type1.TypeId,
+        //        BoxId = 1,
+        //        Word1 = "spring",
+        //        Meaning1 = "ilkbahar",
+        //        Meaning2 = "",
+        //        Meaning3 = ""
+        //    };
+        //    db.Words.Add(word8);
+        //    Word word9 = new()
+        //    {
+        //        WordId = 0,
+        //        UserId = userId,
+        //        CategoryId = category2.CategoryId,
+        //        TypeId = type1.TypeId,
+        //        BoxId = 1,
+        //        Word1 = "summer",
+        //        Meaning1 = "yaz",
+        //        Meaning2 = "",
+        //        Meaning3 = ""
+        //    };
+        //    db.Words.Add(word9);
+        //    Word word10 = new()
+        //    {
+        //        WordId = 0,
+        //        UserId = userId,
+        //        CategoryId = category2.CategoryId,
+        //        TypeId = type1.TypeId,
+        //        BoxId = 1,
+        //        Word1 = "autumn",
+        //        Meaning1 = "sonbahar",
+        //        Meaning2 = "",
+        //        Meaning3 = ""
+        //    };
+        //    db.Words.Add(word10);
+        //    Word word11 = new()
+        //    {
+        //        WordId = 0,
+        //        UserId = userId,
+        //        CategoryId = category2.CategoryId,
+        //        TypeId = type1.TypeId,
+        //        BoxId = 1,
+        //        Word1 = "winter",
+        //        Meaning1 = "kış",
+        //        Meaning2 = "",
+        //        Meaning3 = ""
+        //    };
+        //    db.Words.Add(word11);
+        //    // Hayvanlar
+        //    Word word12 = new()
+        //    {
+        //        WordId = 0,
+        //        UserId = userId,
+        //        CategoryId = category3.CategoryId,
+        //        TypeId = type1.TypeId,
+        //        BoxId = 1,
+        //        Word1 = "dog",
+        //        Meaning1 = "köpek",
+        //        Meaning2 = "",
+        //        Meaning3 = ""
+        //    };
+        //    db.Words.Add(word12);
+        //    Word word13 = new()
+        //    {
+        //        WordId = 0,
+        //        UserId = userId,
+        //        CategoryId = category3.CategoryId,
+        //        TypeId = type1.TypeId,
+        //        BoxId = 1,
+        //        Word1 = "",
+        //        Meaning1 = "",
+        //        Meaning2 = "",
+        //        Meaning3 = ""
+        //    };
+        //    db.Words.Add(word13);
+        //    Word word14 = new()
+        //    {
+        //        WordId = 0,
+        //        UserId = userId,
+        //        CategoryId = category3.CategoryId,
+        //        TypeId = type1.TypeId,
+        //        BoxId = 1,
+        //        Word1 = "",
+        //        Meaning1 = "",
+        //        Meaning2 = "",
+        //        Meaning3 = ""
+        //    };
+        //    db.Words.Add(word14);
+        //    Word word15 = new()
+        //    {
+        //        WordId = 0,
+        //        UserId = userId,
+        //        CategoryId = category3.CategoryId,
+        //        TypeId = type1.TypeId,
+        //        BoxId = 1,
+        //        Word1 = "",
+        //        Meaning1 = "",
+        //        Meaning2 = "",
+        //        Meaning3 = ""
+        //    };
+        //    db.Words.Add(word15);
+        //    Word word16 = new()
+        //    {
+        //        WordId = 0,
+        //        UserId = userId,
+        //        CategoryId = category3.CategoryId,
+        //        TypeId = type1.TypeId,
+        //        BoxId = 1,
+        //        Word1 = "",
+        //        Meaning1 = "",
+        //        Meaning2 = "",
+        //        Meaning3 = ""
+        //    };
+        //    db.Words.Add(word16);
+        //    Word word17 = new()
+        //    {
+        //        WordId = 0,
+        //        UserId = userId,
+        //        CategoryId = category3.CategoryId,
+        //        TypeId = type1.TypeId,
+        //        BoxId = 1,
+        //        Word1 = "",
+        //        Meaning1 = "",
+        //        Meaning2 = "",
+        //        Meaning3 = ""
+        //    };
+        //    db.Words.Add(word17);
+        //    Word word18 = new()
+        //    {
+        //        WordId = 0,
+        //        UserId = userId,
+        //        CategoryId = category3.CategoryId,
+        //        TypeId = type1.TypeId,
+        //        BoxId = 1,
+        //        Word1 = "",
+        //        Meaning1 = "",
+        //        Meaning2 = "",
+        //        Meaning3 = ""
+        //    };
+        //    db.Words.Add(word18);
+        //    Word word19 = new()
+        //    {
+        //        WordId = 0,
+        //        UserId = userId,
+        //        CategoryId = category3.CategoryId,
+        //        TypeId = type1.TypeId,
+        //        BoxId = 1,
+        //        Word1 = "",
+        //        Meaning1 = "",
+        //        Meaning2 = "",
+        //        Meaning3 = ""
+        //    };
+        //    db.Words.Add(word19);
+        //    Word word20 = new()
+        //    {
+        //        WordId = 0,
+        //        UserId = userId,
+        //        CategoryId = category3.CategoryId,
+        //        TypeId = type1.TypeId,
+        //        BoxId = 1,
+        //        Word1 = "",
+        //        Meaning1 = "",
+        //        Meaning2 = "",
+        //        Meaning3 = ""
+        //    };
+        //    db.Words.Add(word20);
+        //    Word word21 = new()
+        //    {
+        //        WordId = 0,
+        //        UserId = userId,
+        //        CategoryId = category3.CategoryId,
+        //        TypeId = type1.TypeId,
+        //        BoxId = 1,
+        //        Word1 = "",
+        //        Meaning1 = "",
+        //        Meaning2 = "",
+        //        Meaning3 = ""
+        //    };
+        //    db.Words.Add(word21);
+        //    Word word22 = new()
+        //    {
+        //        WordId = 0,
+        //        UserId = userId,
+        //        CategoryId = category3.CategoryId,
+        //        TypeId = type1.TypeId,
+        //        BoxId = 1,
+        //        Word1 = "",
+        //        Meaning1 = "",
+        //        Meaning2 = "",
+        //        Meaning3 = ""
+        //    };
+        //    db.Words.Add(word22);
+        //    Word word23 = new()
+        //    {
+        //        WordId = 0,
+        //        UserId = userId,
+        //        CategoryId = category3.CategoryId,
+        //        TypeId = type1.TypeId,
+        //        BoxId = 1,
+        //        Word1 = "",
+        //        Meaning1 = "",
+        //        Meaning2 = "",
+        //        Meaning3 = ""
+        //    };
+        //    db.Words.Add(word23);
+        //    Word word24 = new()
+        //    {
+        //        WordId = 0,
+        //        UserId = userId,
+        //        CategoryId = category.CategoryId,
+        //        TypeId = type.TypeId,
+        //        BoxId = 1,
+        //        Word1 = "",
+        //        Meaning1 = "",
+        //        Meaning2 = "",
+        //        Meaning3 = ""
+        //    };
+        //    db.Words.Add(word24);
+        //    Word word25 = new()
+        //    {
+        //        WordId = 0,
+        //        UserId = userId,
+        //        CategoryId = category.CategoryId,
+        //        TypeId = type.TypeId,
+        //        BoxId = 1,
+        //        Word1 = "",
+        //        Meaning1 = "",
+        //        Meaning2 = "",
+        //        Meaning3 = ""
+        //    };
+        //    db.Words.Add(word);
+        //    Word word26 = new()
+        //    {
+        //        WordId = 0,
+        //        UserId = userId,
+        //        CategoryId = category.CategoryId,
+        //        TypeId = type.TypeId,
+        //        BoxId = 1,
+        //        Word1 = "",
+        //        Meaning1 = "",
+        //        Meaning2 = "",
+        //        Meaning3 = ""
+        //    };
+        //    db.Words.Add(word);
+        //    Word word27 = new()
+        //    {
+        //        WordId = 0,
+        //        UserId = userId,
+        //        CategoryId = category.CategoryId,
+        //        TypeId = type.TypeId,
+        //        BoxId = 1,
+        //        Word1 = "",
+        //        Meaning1 = "",
+        //        Meaning2 = "",
+        //        Meaning3 = ""
+        //    };
+        //    db.Words.Add(word);
+        //    Word word28 = new()
+        //    {
+        //        WordId = 0,
+        //        UserId = userId,
+        //        CategoryId = category.CategoryId,
+        //        TypeId = type.TypeId,
+        //        BoxId = 1,
+        //        Word1 = "",
+        //        Meaning1 = "",
+        //        Meaning2 = "",
+        //        Meaning3 = ""
+        //    };
+        //    db.Words.Add(word);
+        //    Word word29 = new()
+        //    {
+        //        WordId = 0,
+        //        UserId = userId,
+        //        CategoryId = category.CategoryId,
+        //        TypeId = type.TypeId,
+        //        BoxId = 1,
+        //        Word1 = "",
+        //        Meaning1 = "",
+        //        Meaning2 = "",
+        //        Meaning3 = ""
+        //    };
+        //    db.Words.Add(word);
+        //    Word word30 = new()
+        //    {
+        //        WordId = 0,
+        //        UserId = userId,
+        //        CategoryId = category.CategoryId,
+        //        TypeId = type.TypeId,
+        //        BoxId = 1,
+        //        Word1 = "",
+        //        Meaning1 = "",
+        //        Meaning2 = "",
+        //        Meaning3 = ""
+        //    };
+        //    db.Words.Add(word);
+        //    db.SaveChanges();
+        //    return new SuccessResult(Messages.WordPackLoaded);
+        //}
         #endregion
 
         #region Authorization
@@ -605,7 +1067,7 @@ namespace WordBook.Controllers
         public IResult GetAllWordsByUserId(int userId)
         {
             using WordBookContext db = new();
-            List<WordDto> words = db.Words.Where(w => w.UserId == userId).Select(word =>
+            List<WordDto> words = db.Words.Where(w => w.UserId == userId).OrderBy(w => w.Word1).Select(word =>
             new WordDto
             {
                 WordId = word.WordId,
