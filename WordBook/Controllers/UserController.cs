@@ -1591,7 +1591,9 @@ namespace WordBook.Controllers
                 SenderId = message.SenderId,
                 ReceiverId = message.ReceiverId,
                 Message1 = message.Message1,
-                CreatedAt = message.CreatedAt
+                CreatedAt = message.CreatedAt,
+                SenderName = message.Sender.UserName,
+                ReceiverName = message.Receiver.UserName,
             }).ToList();
             if (!messages.Any())
             {
@@ -1629,6 +1631,23 @@ namespace WordBook.Controllers
             db.Messages.Remove(deletedMessage);
             db.SaveChanges();
             return new SuccessResult(Messages.MessageDeleted);
+        }
+
+        [HttpPost("deletemessages")]
+        public IResult DeleteMessages(MessageDto[] messageDtos)
+        {
+            using WordBookContext db = new();
+            for (int i = 0; i < messageDtos.Length; i++)
+            {
+                Message deletedMessage = db.Messages.Where(m => m.MessageId == messageDtos[i].MessageId).SingleOrDefault();
+                if (deletedMessage == null)
+                {
+                    return new ErrorResult(Messages.MessageNotFound);
+                }
+                db.Messages.Remove(deletedMessage);
+                db.SaveChanges();
+            }
+            return new SuccessResult(Messages.MessagesDeleted);
         }
         #endregion
 

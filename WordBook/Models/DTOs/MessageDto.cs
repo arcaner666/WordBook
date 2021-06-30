@@ -12,5 +12,8 @@ namespace WordBook.Models.DTOs
         public int ReceiverId { get; set; }
         public string Message1 { get; set; }
         public string CreatedAt { get; set; }
+        // Extras 
+        public string SenderName { get; set; }
+        public string ReceiverName { get; set; }
     }
 }

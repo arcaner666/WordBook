@@ -131,6 +131,7 @@ namespace WordBook.Constants
         public const string MessageNotFound = "The message is not found.";
         public const string MessageSent = "The message has been sent.";
         public const string MessageDeleted = "The message has been deleted.";
+        public const string MessagesDeleted = "The messages have been deleted.";
         #endregion
 
         #region SharedWords
