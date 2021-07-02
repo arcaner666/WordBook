@@ -1584,7 +1584,7 @@ namespace WordBook.Controllers
         public IResult GetAllMessagesByReceiverId(int receiverId)
         {
             using WordBookContext db = new();
-            List<MessageDto> messages = db.Messages.Where(m => m.ReceiverId == receiverId).Select(message =>
+            List<MessageDto> messages = db.Messages.Where(m => m.ReceiverId == receiverId).OrderByDescending(m => m.CreatedAt).Select(message =>
             new MessageDto
             {
                 MessageId = message.MessageId,
@@ -1606,11 +1606,20 @@ namespace WordBook.Controllers
         public IResult SendMessage(MessageDto messageDto)
         {
             using WordBookContext db = new();
+            User receiver = db.Users.Where(u => u.UserName == messageDto.ReceiverName).SingleOrDefault();
+            if (receiver == null)
+            {
+                return new ErrorResult(Messages.UserNotFound);
+            }
+            if (messageDto.Message1.Length > 200)
+            {
+                return new ErrorResult(Messages.MessageIsTooLong);
+            }
             Message sentMessage = new()
             {
                 MessageId = 0,
                 SenderId = messageDto.SenderId,
-                ReceiverId = messageDto.ReceiverId,
+                ReceiverId = receiver.UserId,
                 Message1 = messageDto.Message1,
                 CreatedAt = System.DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString()
             };
