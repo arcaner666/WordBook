@@ -1628,6 +1628,31 @@ namespace WordBook.Controllers
             return new SuccessResult(Messages.MessageSent);
         }
 
+        [HttpPost("sendmessagetoall")]
+        public IResult SendMessageToAll(MessageDto messageDto)
+        {
+            using WordBookContext db = new();
+            if (messageDto.Message1.Length > 200)
+            {
+                return new ErrorResult(Messages.MessageIsTooLong);
+            }
+            List<User> users = db.Users.ToList();
+            foreach (User user in users)
+            {
+                Message sentMessage = new()
+                {
+                    MessageId = 0,
+                    SenderId = messageDto.SenderId,
+                    ReceiverId = user.UserId,
+                    Message1 = messageDto.Message1,
+                    CreatedAt = System.DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString()
+                };
+                db.Messages.Add(sentMessage);
+            }
+            db.SaveChanges();
+            return new SuccessResult(Messages.MessageSent);
+        }
+
         [HttpPost("deletemessage")]
         public IResult DeleteMessage(MessageDto messageDto)
         {
